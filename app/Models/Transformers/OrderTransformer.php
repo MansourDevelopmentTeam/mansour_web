@@ -46,7 +46,7 @@ class OrderTransformer extends Transformer
             "user_agent" => $order->user_agent,
             "created_at" => (string)$order->created_at,
 			"scheduled_at" => (string)$order->scheduled_at,
-			"address" => $order->address->load("district"),
+			"address" => $order->address ? $order->address->load("district") : null,
 			"items" => $this->itemsTrans->transformCollection($order->items),
 			"schedule" => $order->schedule ? $order->schedule->load("days") : null,
             "parent_id" => $order->parent_id,
