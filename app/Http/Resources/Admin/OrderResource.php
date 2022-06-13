@@ -13,11 +13,11 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         $user = [
-            "id" => $this->user_id,
-            "full_name" => $this->customer->full_name,
-            "name" => $this->customer->full_name,
-            "phone" => $this->customer->phone,
-            "email" => $this->customer->email
+            "id" => $this->user_id ?? null,
+            "full_name" => $this->customer->full_name ?? null,
+            "name" => $this->customer->full_name ?? null,
+            "phone" => $this->customer->phone ?? null,
+            "email" => $this->customer->email ?? null
         ];
         $mansourOrder = DB::connection('sqlsrv')->table('dbo.Orders')->where('Order_id', $this->id)->first();
 
