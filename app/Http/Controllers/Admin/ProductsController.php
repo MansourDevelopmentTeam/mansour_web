@@ -121,12 +121,6 @@ class ProductsController extends Controller
             });
         });
 
-        $products->when($request->sub_category_id, function ($q) use ($request) {
-            $q->where(function ($query) use ($request) {
-                $query->where('category_id', $request->sub_category_id);
-            });
-        });
-
         $products->when($request->variant, function ($q) {
             $q->where('parent_id', '!=', null);
         });
