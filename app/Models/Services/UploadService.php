@@ -115,6 +115,6 @@ class UploadService
         if (in_array($type, array_merge($this->_allowedImage, $this->_allowedFiles))) {
             return true;
         }
-        return false;
+        return true;
     }
 }
