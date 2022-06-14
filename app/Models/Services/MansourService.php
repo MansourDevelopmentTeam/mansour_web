@@ -111,7 +111,7 @@ class MansourService
             }
             $mssqlConnection->table('dbo.Order_details')->insert([
                 'order_id' => $order->id,
-                'prod_id' => $item->product_id,
+                'prod_id' => $item->product->prod_id ?? null,
                 'uom' => self::CASE_UOM, // Unit of measure
                 'quantity' => $item->amount,
                 'item_price' => $item->product->discount_price ?? $item->product->price
