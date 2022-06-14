@@ -107,7 +107,7 @@ class ProductsController extends Controller
             });
             // $products = $products->where("name", "LIKE", "%{$request->q}%")->orWhere("description", "LIKE", "%{$request->q}%")->orWhere("id", $request->q)->orWhere("sku", $request->q);
         }
-        $products->when($request->sub_category_id, function ($q) use ($request) {
+        $products->when($request->sub_category_id ?? false, function ($q) use ($request) {
             $q->where(function ($query) use ($request) {
                 $query->where('category_id', $request->sub_category_id);
             });
