@@ -71,7 +71,12 @@ class OrderManager
                 }
             }
         }
-
+        if ($state == OrderState::RETURNED) {
+            if ($this->order->state_id != $state) {
+                $this->restockOrder();
+            }
+            $this->order->customer->update(["admin_first_order" => 1]);
+        }
         if ($state == OrderState::PROCESSING) {
             $this->order->customer->update(["admin_first_order" => 1]);
         }
@@ -122,22 +127,14 @@ class OrderManager
             if ($this->order->state_id != $state && $subtract_stock == "true") {
                 $customer->update(["first_order" => 0]);
                 $this->restockOrder();
-                // foreach ($this->order->items as $item) {
-                //     $product = Product::where('id', $item['product_id'])->first();
-                //     $productStocks = $product->stock;
-                //     $product->update(['stock' => $item['amount'] + $productStocks]);
-                // }
             }
-            if ($state == OrderState::RETURNED) {
-                if ($this->order->state_id != $state) {
-                    foreach ($this->order->items as $item) {
-                        $product = Product::where('id', $item['product_id'])->first();
-                        $productStocks = $product->stock;
-                        $product->update(['stock' => $item['amount'] + $productStocks]);
-                    }
-                }
-                $this->order->customer->update(["admin_first_order" => 1]);
+        }
+
+        if ($state == OrderState::RETURNED) {
+            if ($this->order->state_id != $state) {
+                $this->restockOrder();
             }
+            $this->order->customer->update(["admin_first_order" => 1]);
         }
 
         if ($state == OrderState::PROCESSING) {
@@ -288,24 +285,21 @@ class OrderManager
 
     public function restockOrder()
     {
-        $items = $this->order->items()->select('*', \DB::raw('IFNULL(bundle_id, UUID()) as unq'))->groupby('unq')->get();
+        $items = $this->order->items()->addSelect('*', \DB::raw('IFNULL(bundle_id, UUID()) as unq'))->groupby('unq')->get();
         foreach ($items as $item) {
             if (is_numeric($item->unq)) {
                 if ($item->bundleProduct->parent->has_stock) {
                     $product = Product::where('id', $item['bundle_id'])->first();
-                    $productStocks = $product->stock;
-                    $product->update(['stock' => $item['amount'] + $productStocks]);
+                    $product->increment('stock', $item['amount']);
                 } else {
                     $products = $item->bundleProduct->bundleProduct;
                     foreach ($products as $product) {
-                        $productStocks = $product->stock;
-                        $product->update(['stock' => $item['amount'] + $productStocks]);
+                        $product->increment('stock', $item['amount']);
                     }
                 }
             } else {
                 $product = Product::where('id', $item['product_id'])->first();
-                $productStocks = $product->stock;
-                $product->update(['stock' => $item['amount'] + $productStocks]);
+                $product->increment('stock', $item['amount']);
             }
         }
     }
