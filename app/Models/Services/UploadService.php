@@ -74,7 +74,7 @@ class UploadService
     {
         $request->validate([ "page" => "required|int" ]);
 
-        $fullDirName = "public/uploads";
+        $fullDirName = "public" . DIRECTORY_SEPARATOR . "uploads";
         $files = collect(File::allFiles(Storage::path($fullDirName)))->sortByDesc(function ($file) {
             return $file->getCTime();
         })->toArray();
@@ -82,7 +82,7 @@ class UploadService
         $files = array_map(function ($item) use ($fullDirName) {
             return [
                 "name" => $item->getFileName(),
-                "url" => Url::to('') . Storage::url('public/uploads/' . $item->getFileName())
+                "url" => Url::to('') . Storage::url('public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $item->getFileName())
             ];
         }, $files);
         array_shift($files);
