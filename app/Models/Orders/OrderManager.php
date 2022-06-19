@@ -124,7 +124,7 @@ class OrderManager
             if (!$hasUncancelledOrders) {
                 $customer->update(["first_order" => 0]);
             }
-            if ($this->order->state_id != $state && $subtract_stock == "true") {
+            if ($this->order->state_id != $state && $subtract_stock) {
                 $customer->update(["first_order" => 0]);
                 $this->restockOrder();
             }

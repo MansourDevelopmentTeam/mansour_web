@@ -266,8 +266,10 @@ class OrdersController extends Controller
     public function bulkChangeState(Request $request)
     {
         $request->merge([
-            'notify_customer' => true
+            'notify_customer' => true,
+            'subtract_stock' => $request->subtract_stock ?? true,
         ]);
+
         $this->validate($request, [
             "status_notes" => "sometimes|nullable|string",
             "order_ids" => "required|array",
