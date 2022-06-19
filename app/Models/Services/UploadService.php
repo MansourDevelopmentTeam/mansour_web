@@ -82,7 +82,7 @@ class UploadService
         $files = array_map(function ($item) use ($fullDirName) {
             return [
                 "name" => $item->getFileName(),
-                "url" => Url::to('') . Storage::url('public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $item->getFileName())
+                "url" => Storage::url('uploads/' . $item->getFileName())
             ];
         }, $files);
         array_shift($files);
