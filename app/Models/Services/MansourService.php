@@ -105,9 +105,10 @@ class MansourService
 
         foreach ($orderItems as $item) {
             $itemPrice = $item->product->discount_price ?? $item->product->price;
+            $totalItemPrice = $itemPrice * $item->amount;
             $itemTax = 0;
             if (($item->product->tax_percentage || $item->product->fix_tax) && !in_array($item->product->prod_id, $giftProducts)) {
-                $itemTax = ($item->product->tax_percentage) ? (($item->product->tax_percentage / 100) * $itemPrice) * $item->amount : ($item->product->fix_tax * $item->amount);
+                $itemTax = ($item->product->tax_percentage) ? ($item->product->tax_percentage / 100) * $totalItemPrice : ($item->product->fix_tax * $item->amount);
             }
             $mssqlConnection->table('dbo.Order_details')->insert([
                 'order_id' => $order->id,
@@ -119,6 +120,12 @@ class MansourService
             $tax +=  $itemTax;
             foreach ($incentiveDetails as $key => $incentive) {
                 if (in_array($item->product->prod_id, $incentive['tax_prods'])) {
+                    if ($item->product->tax_percentage ?? false) {
+                        $tax -= $itemTax;
+                        $incentiveValue = floatval(($totalItemPrice / $total) * $incentive['discount']);
+                        $itemPriceAfterSubtractIncentive = $totalItemPrice - $incentiveValue;
+                        $tax += ($item->product->tax_percentage / 100) * $itemPriceAfterSubtractIncentive;
+                    }
                     $incentiveDetails[$key]['total'] += $itemPrice * $item->amount;
                     $incentiveDetails[$key]['amount_sold_products'] += $item->amount;
                 }
