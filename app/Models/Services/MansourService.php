@@ -153,7 +153,7 @@ class MansourService
                         'prod_id' => $item->product->prod_id,
                         'incentive_id' => $incentive['incentive_id'], // Unit of measure
                         'incentive_value' => $incentiveValue,
-                        'qty_sold' => 1
+                        'qty_sold' => floatval($item->amount)
                     ]);
                 }
             }
