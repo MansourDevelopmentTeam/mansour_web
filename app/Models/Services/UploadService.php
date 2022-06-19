@@ -75,7 +75,7 @@ class UploadService
         $request->validate([ "page" => "required|int" ]);
 
         $fullDirName = "public" . DIRECTORY_SEPARATOR . "uploads";
-        $files = collect(File::allFiles(Storage::path($fullDirName)))->sortByDesc(function ($file) {
+        $files = collect(File::allFiles(Storage::path('uploads')))->sortByDesc(function ($file) {
             return $file->getCTime();
         })->toArray();
 
