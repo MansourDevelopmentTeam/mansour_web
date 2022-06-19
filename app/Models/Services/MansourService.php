@@ -119,8 +119,8 @@ class MansourService
             $tax +=  $itemTax;
             foreach ($incentiveDetails as $key => $incentive) {
                 if (in_array($item->product->prod_id, $incentive['tax_prods'])) {
-                    $incentiveDetails[$key]['total'] += $itemPrice;
-                    $incentiveDetails[$key]['amount_sold_products'] += 1;
+                    $incentiveDetails[$key]['total'] += $itemPrice * $item->amount;
+                    $incentiveDetails[$key]['amount_sold_products'] += $item->amount;
                 }
             }
         }
@@ -147,12 +147,13 @@ class MansourService
             foreach ($orderItems as $item) {
                 if (in_array($item->product->prod_id, $incentive['tax_prods'])) {
                     $itemPrice = $item->product->discount_price ?? $item->product->price;
-                    $incentiveValue = floatval(($itemPrice / $total) * $incentive['discount']);
+                    $incentiveValue = floatval((($itemPrice * $item->amount) / $total) * $incentive['discount']);
                     $mssqlConnection->table('dbo.Order_incentives_details')->insert([
                         'order_id' => $order->id,
                         'prod_id' => $item->product->prod_id,
                         'incentive_id' => $incentive['incentive_id'], // Unit of measure
-                        'incentive_value' => $incentiveValue
+                        'incentive_value' => $incentiveValue,
+                        'qty_sold' => $item->amount
                     ]);
                 }
             }
