@@ -148,7 +148,6 @@ class MansourService
                 if (in_array($item->product->prod_id, $incentive['tax_prods'])) {
                     $itemPrice = $item->product->discount_price ?? $item->product->price;
                     $incentiveValue = floatval((($itemPrice * $item->amount) / $total) * $incentive['discount']);
-                    $incentiveValue = 10;
                     $mssqlConnection->table('dbo.Order_incentives_details')->insert([
                         'order_id' => $order->id,
                         'prod_id' => $item->product->prod_id,
