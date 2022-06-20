@@ -17,7 +17,18 @@ class Promo extends Model
     const PERCENT = 2;
     const FREE_DELIVERY = 3;
 
-    protected $fillable = ["name", "type", "amount", "max_amount", "expiration_date", "description", "first_order", "minimum_amount", "target_type"];
+    protected $fillable = [
+        "name",
+        "type",
+        "amount",
+        "max_amount",
+        "expiration_date",
+        "description",
+        "first_order",
+        "minimum_amount",
+        "target_type",
+        'incentive_id'
+    ];
 
     // public $active;
 
@@ -25,7 +36,8 @@ class Promo extends Model
     	"type" => "required|in:1,2,3",
     	"amount" => "nullable|numeric",
     	"expiration_date" => "required|date",
-    	"description" => "required"
+    	"description" => "required",
+        'incentive_id' => 'integer'
     ];
 
 

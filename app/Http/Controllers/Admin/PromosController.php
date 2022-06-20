@@ -56,6 +56,7 @@ class PromosController extends Controller
         $promo->list_id = $request->list_id;
         $promo->minimum_amount = $request->minimum_amount;
         $promo->target_type = $request->target_type;
+        $promo->incentive_id = $request->incentive_id;
         $promo->save();
 
         if ($request->target_type == 1) {
@@ -122,6 +123,7 @@ class PromosController extends Controller
         $promo->minimum_amount = $request->minimum_amount;
         $promo->list_id = $request->list_id;
         $promo->target_type = $request->target_type;
+        $promo->incentive_id = $request->incentive_id;
         $promo->save();
 
         if ($request->target_type == 1) {

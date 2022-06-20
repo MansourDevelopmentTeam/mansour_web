@@ -108,7 +108,7 @@ class MansourService
             $totalItemPrice = $itemPrice * $item->amount;
             $itemTax = 0;
             if (($item->product->tax_percentage || $item->product->fix_tax) && !in_array($item->product->prod_id, $giftProducts)) {
-                $itemTax = ($item->product->tax_percentage) ? ($item->product->tax_percentage / 100) * $totalItemPrice : ($item->product->fix_tax * $item->amount);
+                $itemTax = ($item->product->tax_percentage && $item->product->tax_percentage > 0) ? ($item->product->tax_percentage / 100) * $totalItemPrice : ($item->product->fix_tax * $item->amount);
             }
             $mssqlConnection->table('dbo.Order_details')->insert([
                 'order_id' => $order->id,
@@ -171,7 +171,7 @@ class MansourService
                 'incentive_type' => self::INCENTIVE_TYPE_PROMOCODE,
                 'incentive_payed' => $promoDiscount['discount'],
                 'qty_sold' => isset($promoDiscount['products']) ? $promoDiscount['products']->count() : null,
-                'incentive_id' => self::PROMO_ID,
+                'incentive_id' => $promoDiscount['promo']->incentive_id ?? self::PROMO_ID,
                 'PromoCode_no' => $promoDiscount['promo']->name ?? null
             ]);
         }
