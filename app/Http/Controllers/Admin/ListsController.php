@@ -205,11 +205,7 @@ class ListsController extends Controller
     public function destroy($id)
     {
         $list = Lists::findOrFail($id);
-
-        $list->update([
-            'deleted_at' => now()
-        ]);
-
+        $list->delete();
         return $this->jsonResponse("Success");
     }
 }

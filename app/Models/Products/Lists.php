@@ -9,9 +9,12 @@ use App\Models\Payment\Promotion\Promotion;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lists extends Model
 {
+    use SoftDeletes;
+
     const TYPE_CATEGORY = 1;
     const TYPE_SUBCATEGORY = 2;
     const TYPE_BRANDS = 3;
