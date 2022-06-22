@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lists extends Model
 {
-    use SoftDeletes;
-
     const TYPE_CATEGORY = 1;
     const TYPE_SUBCATEGORY = 2;
     const TYPE_BRANDS = 3;
@@ -40,7 +38,8 @@ class Lists extends Model
         // "image_ar",
         // "image_en",
         "list_method",
-        "condition_type"
+        "condition_type",
+        'deleted_at'
     ];
 
     protected $casts = [

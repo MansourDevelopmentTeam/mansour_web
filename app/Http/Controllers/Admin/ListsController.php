@@ -30,7 +30,7 @@ class ListsController extends Controller
 
     public function index()
     {
-        $lists = Lists::withCount('products')->get();
+        $lists = Lists::withCount('products')->whereNull('deleted_at')->get();
 
         $listsResources = ListResource::collection($lists);
 
@@ -205,7 +205,9 @@ class ListsController extends Controller
     public function destroy($id)
     {
         $list = Lists::findOrFail($id);
-        $list->delete();
+        $list->update([
+            'deleted_at' => now()
+        ]);
         return $this->jsonResponse("Success");
     }
 }
