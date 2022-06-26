@@ -115,7 +115,7 @@ class MansourService
                 'prod_id' => $item->product->prod_id ?? null,
                 'uom' => self::CASE_UOM, // Unit of measure
                 'quantity' => $item->amount,
-                'item_price' => $item->product->discount_price ?? $item->product->price
+                'item_price' => floatval(($item->product->discount_price ?? $item->product->price) * $item->amount)
             ]);
             $tax +=  $itemTax;
             foreach ($incentiveDetails as $key => $incentive) {
