@@ -21,7 +21,7 @@ class ProductCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function ($product){
+        return $this->collection->map(function ($product) {
 
             $variants = $product->availableProductVariants->sortByDesc('order');
 
@@ -38,8 +38,10 @@ class ProductCollection extends ResourceCollection
                 $stock = $variants->sum('stock');
             } else {
                 $role = auth()->user()->role;
-                if($role == 'ws'){
+                if ($role == 'rt') {
                     $product->price = $product->price_ws;
+                } else {
+                    $product->price = $product->price;
                 }
                 $firstVariant = $product;
                 $stock = $product->stock;
@@ -57,14 +59,14 @@ class ProductCollection extends ResourceCollection
                         }
                     }
                 }
-            }catch(CartEmptyException $e){
+            } catch (CartEmptyException $e) {
                 $product->amount = 0;
             }
 
             if ($product->affiliate_commission && config('constants.enable_affiliate')) {
                 $price = $product->discount_price ?? $product->price;
                 $commission_amount = $price * ($product->affiliate_commission / 100);
-            }else {
+            } else {
                 $commission_amount = 0;
             }
             $promotion = count($product->promotions()) > 0 ? $product->promotions()[0] : null;
@@ -82,7 +84,7 @@ class ProductCollection extends ResourceCollection
                 'meta_title' => $firstVariant->meta_title,
                 'meta_description' => $firstVariant->meta_description,
                 'keywords' => $firstVariant->keywords,
-                "preorder" => (boolean) $product->active_preorder,
+                "preorder" => (bool) $product->active_preorder,
                 'preorder_price' => $firstVariant->preorder_price,
                 'preorder_start_date' => $product->preorder_start_date,
                 'preorder_end_date' => $product->preorder_end_date,
@@ -93,7 +95,7 @@ class ProductCollection extends ResourceCollection
                 'downloadable_label' => $product->downloadable_label,
                 'video' => $firstVariant->video,
                 'available_soon' => (bool) ($firstVariant->parent_id ? $firstVariant->parent->available_soon : $firstVariant->available_soon),
-                'price' => !is_null($firstVariant->price) ? (double)round($firstVariant->price, 2) : null,
+                'price' => !is_null($firstVariant->price) ? (float)round($firstVariant->price, 2) : null,
                 'discount_price' => $product->active_discount ? $product->discount_price : null,
                 'discount_start_date' => $product->discount_start_date,
                 'discount_end_date' => $product->discount_end_date,
@@ -101,7 +103,7 @@ class ProductCollection extends ResourceCollection
                 'category' => $product->getCategoryTree(request()->header('lang')),
                 "group" => isset($product->category->group[0]) ? new GroupsWithoutSubCategoriesResource($product->category->group[0]) : null,
                 'optional_sub_category_id' => $product->optional_sub_category_id,
-                'in_stock' => $stock > 0,// && $product->amount <= $stock,
+                'in_stock' => $stock > 0, // && $product->amount <= $stock,
                 'stock' => floatval($stock),
                 'promotion' => isset($promotion) ? $promotion->name : null,
 
