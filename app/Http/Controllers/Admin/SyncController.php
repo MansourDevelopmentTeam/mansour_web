@@ -91,6 +91,7 @@ class SyncController extends Controller
                     'type' => 1,
                     'active' => 1,
                     'price' => $product->pricelist_case,
+                    'price_ws' => $product->pricelist_case_carton_ws,
                     'tax_percentage' => $product->tax_percentage,
                     'fix_tax' => $product->FIX_TAX
                 ]);
@@ -109,6 +110,7 @@ class SyncController extends Controller
                         'type' => 1,
                         'active' => 1,
                         'price' => $product->pricelist_case,
+                        'price_ws' => $product->pricelist_case_carton_ws,
                         'last_editor' => auth()->User()->id,
                         'creator_id' => auth()->User()->id
                     ]
@@ -128,6 +130,7 @@ class SyncController extends Controller
                         'type' => 1,
                         'active' => 1,
                         'price' => $product->pricelist_case,
+                        'price_ws' => $product->pricelist_case_carton_ws,
                         'last_editor' => auth()->User()->id,
                         'creator_id' => auth()->User()->id,
                         'tax_percentage' => $product->tax_percentage,

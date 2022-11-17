@@ -37,6 +37,10 @@ class ProductCollection extends ResourceCollection
                 $firstVariant = $product->productVariants()->orderBy("stock", "DESC")->first();
                 $stock = $variants->sum('stock');
             } else {
+                $role = auth()->user()->role;
+                if($role == 'ws'){
+                    $product->price = $product->price_ws;
+                }
                 $firstVariant = $product;
                 $stock = $product->stock;
             }

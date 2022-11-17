@@ -31,7 +31,7 @@ class Product extends Model
     protected $hidden = ['pivot'];
     protected $appends = ['variants_stock_count'];
 
-    protected $fillable = ["name", "name_ar", "description", "meta_title", "meta_description", "meta_title_ar", "meta_description_ar", "keywords", "description_ar", "image", "brand_id", "price", "category_id", "optional_sub_category_id", "discount_price", "discount_start_date", "discount_end_date", "creator_id", "sku", "stock", "stock_alert", "rate", "long_description_ar", "long_description_en", "active","default_variant","parent_id", "max_per_order", "min_days","order", "barcode", "subtract_stock", "option_default_id", "weight", "preorder", "preorder_start_date", "preorder_end_date", "preorder_price", "type","video","available_soon","last_editor","bundle_checkout", "has_stock", "downloadable_url", "downloadable_label", "affiliate_commission", "free_delivery", 'prod_id',
+    protected $fillable = ["name", "name_ar", "description", "meta_title", "meta_description", "meta_title_ar", "meta_description_ar", "keywords", "description_ar", "image", "brand_id", "price","price_ws","category_id", "optional_sub_category_id", "discount_price", "discount_start_date", "discount_end_date", "creator_id", "sku", "stock", "stock_alert", "rate", "long_description_ar", "long_description_en", "active","default_variant","parent_id", "max_per_order", "min_days","order", "barcode", "subtract_stock", "option_default_id", "weight", "preorder", "preorder_start_date", "preorder_end_date", "preorder_price", "type","video","available_soon","last_editor","bundle_checkout", "has_stock", "downloadable_url", "downloadable_label", "affiliate_commission", "free_delivery", 'prod_id',
         'tax_percentage',
         'fix_tax'
     ];
