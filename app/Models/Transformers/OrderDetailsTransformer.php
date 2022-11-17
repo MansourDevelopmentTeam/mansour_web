@@ -65,7 +65,7 @@ class OrderDetailsTransformer extends Transformer
             "phone" => $order->customer->phone ?? null,
             "email" => $order->customer->email ?? null,
         ];
-        $mansourOrder = DB::connection('sqlsrv')->table('dbo.Orders')->where('Order_id', $order->id)->first();
+        $mansourOrder = DB::connection('sqlsrv')->table('dbo.test_Orders')->where('Order_id', $order->id)->first();
 		return [
 			"id" => $order->id,
 			"user" => $user,//$order->customer ? new CustomerSimpleResource($order->customer): null,

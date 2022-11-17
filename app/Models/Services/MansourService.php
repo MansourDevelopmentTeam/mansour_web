@@ -69,7 +69,7 @@ class MansourService
             }
         }
         $netAmount = $total - ($totalIncentives + ($promoDiscount['discount'] ?? 0));
-        $mssqlConnection->table('dbo.Orders')->insert([
+        $mssqlConnection->table('dbo.test_Orders')->insert([
             'Order_id' => $order->id,
             'pos_code' => $user->code,
             'order_date' => $order->created_at,
@@ -84,7 +84,7 @@ class MansourService
             $userWallet = $user->wallet;
             if ($netAmount > $currentWalletAmount) {
                 foreach ($userWallet as $wallet) {
-                    $mssqlConnection->table('dbo.Order_Incentives_Transactions')->insert([
+                    $mssqlConnection->table('dbo.test_Order_Incentives_Transactions')->insert([
                         'Order_id' => $order->id,
                         'incentive_type' => self::INCENTIVE_TYPE_WALLET,
                         'incentive_payed' => $wallet->amount,
@@ -110,7 +110,7 @@ class MansourService
             if (($item->product->tax_percentage || $item->product->fix_tax) && !in_array($item->product->prod_id, $giftProducts)) {
                 $itemTax = ($item->product->tax_percentage && $item->product->tax_percentage > 0) ? ($item->product->tax_percentage / 100) * $totalItemPrice : ($item->product->fix_tax * $item->amount);
             }
-            $mssqlConnection->table('dbo.Order_details')->insert([
+            $mssqlConnection->table('dbo.test_Order_details')->insert([
                 'order_id' => $order->id,
                 'prod_id' => $item->product->prod_id ?? null,
                 'uom' => self::CASE_UOM, // Unit of measure
@@ -131,7 +131,7 @@ class MansourService
                 }
             }
         }
-        $mssqlConnection->table('dbo.Orders')->where('Order_id', $order->id)->update([
+        $mssqlConnection->table('dbo.test_Orders')->where('Order_id', $order->id)->update([
             'Tax' => $tax,
             'Net_amount' => $netAmount
         ]);
@@ -139,7 +139,7 @@ class MansourService
             if (!$incentive['instant']) {
                 continue;
             }
-            $mssqlConnection->table('dbo.Order_Incentives_Transactions')->insert([
+            $mssqlConnection->table('dbo.test_Order_Incentives_Transactions')->insert([
                 'Order_id' => $order->id,
                 'incentive_type' => self::INCENTIVE_TYPE_INCENTIVE,
                 'incentive_payed' => $incentive['discount'],
@@ -155,7 +155,7 @@ class MansourService
                 if (in_array($item->product->prod_id, $incentive['tax_prods'])) {
                     $itemPrice = $item->product->discount_price ?? $item->product->price;
                     $incentiveValue = floatval((($itemPrice * $item->amount) / $total) * $incentive['discount']);
-                    $mssqlConnection->table('dbo.Order_incentives_details')->insert([
+                    $mssqlConnection->table('dbo.test_Order_incentives_details')->insert([
                         'order_id' => $order->id,
                         'prod_id' => $item->product->prod_id,
                         'incentive_id' => $incentive['incentive_id'], // Unit of measure
@@ -166,7 +166,7 @@ class MansourService
             }
         }
         if (isset($promoDiscount['promo'])) {
-            $mssqlConnection->table('dbo.Order_Incentives_Transactions')->insert([
+            $mssqlConnection->table('dbo.test_Order_Incentives_Transactions')->insert([
                 'Order_id' => $order->id,
                 'incentive_type' => self::INCENTIVE_TYPE_PROMOCODE,
                 'incentive_payed' => $promoDiscount['discount'],
@@ -187,7 +187,7 @@ class MansourService
     public function changeOrderState($orderId, $stateId)
     {
         $mssqlConnection = DB::connection('sqlsrv');
-        $mssqlConnection->table('dbo.Orders')->where('Order_id', '=', $orderId)->update([
+        $mssqlConnection->table('dbo.test_Orders')->where('Order_id', '=', $orderId)->update([
             'status' => $stateId
         ]);
     }

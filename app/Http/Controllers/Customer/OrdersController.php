@@ -809,7 +809,7 @@ class OrdersController extends Controller
          $userCode = explode('_', $user->code);
          $terId = $userCode[0];
          $posId = $userCode[1];
-         $targets = $mssqlConnection->table('dbo.Target_Types')
+         $targets = $mssqlConnection->table('dbo.test_Target_Types')
              ->join('dbo.Target_POS', 'dbo.Target_POS.target_type_id', '=', 'dbo.Target_Types.target_type_id')
              ->where('dbo.Target_POS.year', '=', $currentYear)
              ->where('dbo.Target_POS.month', '=', $currentMonth)

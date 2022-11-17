@@ -19,7 +19,7 @@ class SyncController extends Controller
     public function syncUsers(Request $request)
     {
         $mssqlConnection = DB::connection('sqlsrv');
-        $merchants = $mssqlConnection->table('dbo.users')->get();
+        $merchants = $mssqlConnection->table('dbo.test_users')->get();
         $sendSmsTo = [];
         $existedUsers = [];
         foreach($merchants as $merchant) {
@@ -66,7 +66,7 @@ class SyncController extends Controller
     public function syncProducts(Request $request)
     {
         $mssqlConnection = DB::connection('sqlsrv');
-        $products = $mssqlConnection->table('dbo.Products')
+        $products = $mssqlConnection->table('dbo.test_Products')
             ->join('dbo.product_price_list', 'dbo.Products.Prod_id', '=', 'dbo.product_price_list.product_id')
             ->join('dbo.product_sub_family', 'dbo.product_sub_family.sub_family_id', '=', 'dbo.Products.sub_family_id')->get();
 
@@ -148,7 +148,7 @@ class SyncController extends Controller
     public function syncProductFamily(Request $request)
     {
         $mssqlConnection = DB::connection('sqlsrv');
-        $productFamilies = $mssqlConnection->table('dbo.Prod_family')->get();
+        $productFamilies = $mssqlConnection->table('dbo.test_Prod_family')->get();
 
         $existedFamilies = [];
         $existedParentFamilies = [];
@@ -204,7 +204,7 @@ class SyncController extends Controller
     public function incentiveTypes()
     {
         $mssqlConnection = DB::connection('sqlsrv');
-        $incentiveTypes = $mssqlConnection->table('dbo.incentive_types')->get();
+        $incentiveTypes = $mssqlConnection->table('dbo.test_incentive_types')->get();
         return $this->jsonResponse('Success', $incentiveTypes);
     }
 

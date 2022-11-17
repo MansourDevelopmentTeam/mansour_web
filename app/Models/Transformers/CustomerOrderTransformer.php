@@ -51,7 +51,7 @@ class CustomerOrderTransformer extends Transformer
             "name" => $order->customer->full_name ?? $order->address->customer_full_name,
             "phone" => $order->customer->phone ?? $order->address->phone,
         ];
-        $mansourOrder = DB::connection('sqlsrv')->table('dbo.Orders')->where('Order_id', $order->id)->first();
+        $mansourOrder = DB::connection('sqlsrv')->table('dbo.test_Orders')->where('Order_id', $order->id)->first();
 
         return [
             "id"                    => $order->id,

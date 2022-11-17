@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
             "phone" => $this->customer->phone ?? null,
             "email" => $this->customer->email ?? null
         ];
-        $mansourOrder = DB::connection('sqlsrv')->table('dbo.Orders')->where('Order_id', $this->id)->first();
+        $mansourOrder = DB::connection('sqlsrv')->table('dbo.test_Orders')->where('Order_id', $this->id)->first();
 
         return [
             "id" => $this->id,

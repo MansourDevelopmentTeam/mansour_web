@@ -19,7 +19,7 @@ class OrderTransformer extends Transformer
 
 	function transform($order)
 	{
-        $mansourOrder = DB::connection('sqlsrv')->table('dbo.Orders')->where('Order_id', $order->id)->first();
+        $mansourOrder = DB::connection('sqlsrv')->table('dbo.test_Orders')->where('Order_id', $order->id)->first();
 		return [
 			"id" => $order->id,
 			"user" => $order->customer,

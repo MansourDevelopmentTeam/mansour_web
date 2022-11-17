@@ -35,7 +35,7 @@ Route::get('/', function () {
 
 Route::get('test', function(){
 
-	 $mssqlConnection = DB::connection('sqlsrv')->table('dbo.users')->get();
+	 $mssqlConnection = DB::connection('sqlsrv')->table('dbo.test_users')->get();
 	dd($mssqlConnection);
 
 });
