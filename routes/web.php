@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
    return view('welcome');
+});
+
+Route::get('test', function(){
+
+	 $mssqlConnection = DB::connection('sqlsrv')->table('dbo.users')->get();
+	dd($mssqlConnection);
+
 });
